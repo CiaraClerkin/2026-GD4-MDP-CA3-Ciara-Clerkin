@@ -23,12 +23,15 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
 	//process our input....
 
 	//turning...
-	float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
-	SetRotation(newRotation);
+	//float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
+	//SetRotation(newRotation);
+
+	float inputSideDelta = inInputState.GetDesiredHorizontalDelta();
 
 	//moving...
 	float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
 	mThrustDir = inputForwardDelta;
+	mThrustSide = inputSideDelta;
 
 
 	mIsShooting = inInputState.IsShooting();
@@ -39,8 +42,10 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 {
 	//just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
 	//simulating acceleration makes the client prediction a bit more complex
-	Vector3 forwardVector = GetForwardVector();
-	mVelocity = forwardVector * (mThrustDir * inDeltaTime * mMaxLinearSpeed);
+	mVelocity.mX = mThrustSide * inDeltaTime * mMaxLinearSpeed;
+	mVelocity.mY = -mThrustDir * inDeltaTime * mMaxLinearSpeed;
+	//Vector3 forwardVector = GetForwardVector();
+	//mVelocity = forwardVector * (mThrustDir * inDeltaTime * mMaxLinearSpeed);
 }
 
 void RoboCat::SimulateMovement(float inDeltaTime)

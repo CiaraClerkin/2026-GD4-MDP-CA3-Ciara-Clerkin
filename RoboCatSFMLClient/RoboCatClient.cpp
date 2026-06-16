@@ -5,7 +5,8 @@ RoboCatClient::RoboCatClient() :
 	mTimeVelocityBecameOutOfSync(0.f)
 {
 	mSpriteComponent.reset(new PlayerSpriteComponent(this));
-	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("cat"));
+	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("player"));
+	//mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("cat"));
 }
 
 void RoboCatClient::HandleDying()
@@ -22,6 +23,7 @@ void RoboCatClient::HandleDying()
 
 void RoboCatClient::Update()
 {
+	mSpriteComponent->Update(GetVelocity());
 	//is this the cat owned by us?
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
 	{

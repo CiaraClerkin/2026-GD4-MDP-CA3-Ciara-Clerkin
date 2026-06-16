@@ -9,6 +9,7 @@ void TextureManager::StaticInit()
 
 TextureManager::TextureManager()
 {
+	CacheTexture("player", "../Assets/16x16 All Animations-Sheet.png");
 	CacheTexture("cat", "../Assets/cat.png");
 	CacheTexture("mouse", "../Assets/mouse.png");
 	CacheTexture("yarn", "../Assets/yarn.png");

@@ -64,6 +64,7 @@ protected:
 	float				mLastMoveTimestamp;
 
 	float				mThrustDir;
+	float				mThrustSide;
 	int					mHealth;
 
 	bool				mIsShooting;

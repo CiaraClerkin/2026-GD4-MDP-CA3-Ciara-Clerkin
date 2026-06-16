@@ -57,7 +57,7 @@ void RenderManager::RenderComponents()
 	//Get the logical viewport so we can pass this to the SpriteComponents when it's draw time
 	for (SpriteComponent* c : mComponents)
 	{	
-		WindowManager::sInstance->draw(c->GetSprite());	
+		WindowManager::sInstance->draw(c->GetSprite());
 	}
 }
 
