@@ -24,9 +24,12 @@ void RoboCatClient::HandleDying()
 void RoboCatClient::Update()
 {
 	mSpriteComponent->Update(GetVelocity());
+
 	//is this the cat owned by us?
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
 	{
+		
+
 		const Move* pendingMove = InputManager::sInstance->GetAndClearPendingMove();
 		//in theory, only do this if we want to sample input this frame / if there's a new move ( since we have to keep in sync with server )
 		if (pendingMove) //is it time to sample a new move...
@@ -107,6 +110,17 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	else
 	{
 		mThrustDir = 0.f;
+	}
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		inInputStream.Read(stateBit);
+		mThrustSide = stateBit ? 1.f : -1.f;
+	}
+	else
+	{
+		mThrustSide = 0.f;
 	}
 
 	inInputStream.Read(stateBit);

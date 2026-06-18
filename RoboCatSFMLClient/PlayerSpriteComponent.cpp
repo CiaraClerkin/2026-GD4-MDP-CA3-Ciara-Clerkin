@@ -1,4 +1,6 @@
 #include "RoboCatClientPCH.hpp"
+#include <iostream>
+
 
 PlayerSpriteComponent::PlayerSpriteComponent(GameObject* inGameObject) :
 	SpriteComponent(inGameObject)
@@ -33,44 +35,90 @@ void PlayerSpriteComponent::Update(Vector3 velocity)
 {
 	if (clock.getElapsedTime().asSeconds() > 0.2f)
 	{
-		if (velocity.mX > 0)
-		{
-			spriteStart.x = 24;
-			spriteStart.y = 24 * 2;
-		}
-		else if (velocity.mX < 0)
-		{
-			spriteStart.x = 24 * 5;
-			spriteStart.y = 24 * 2;
-		}
-		else 
+		std::cout << velocity.mX << std::endl;
+
+		if (velocity.mX == 0 && velocity.mY == 0)
 		{
 			spriteStart.x = 0;
 			spriteStart.y = 24;
 		}
-
-		if (velocity.mY > 0)
-		{
-			spriteStart.x = 0;
-			spriteStart.y = 24 * 2;
-		}
-		else if (velocity.mY < 0)
-		{
-			spriteStart.x = 384 + 48 + 48;
-			spriteStart.y = 24 * 2;
-		}
 		else 
 		{
-			spriteStart.x = 0;
-			spriteStart.y = 24;
+			if (velocity.mX == 0 || velocity.mY == 0)
+			{
+				if (velocity.mX > 0)
+				{
+					m_sprite.setScale(6.0f, 6.0f);
+					spriteStart.x = 24 * 8;
+					spriteStart.y = 24 * 2;
+				}
+				else if (velocity.mX < 0)
+				{
+					m_sprite.setScale(-6.0f, 6.0f);
+					spriteStart.x = 24 * 8;
+					spriteStart.y = 24 * 2;
+				}
+
+				if (velocity.mY > 0)
+				{
+					spriteStart.x = 0;
+					spriteStart.y = 24 * 2;
+				}
+				else if (velocity.mY < 0)
+				{
+					spriteStart.x = 384;
+					spriteStart.y = 24 * 2;
+				}
+			}
+			else 
+			{
+				if (velocity.mY > 0)
+				{
+					if (velocity.mX > 0)
+					{
+						m_sprite.setScale(6.0f, 6.0f);
+						spriteStart.x = 24 * 4;
+						spriteStart.y = 24 * 2;
+					}
+					else 
+					{
+						m_sprite.setScale(-6.0f, 6.0f);
+						spriteStart.x = 24 * 4;
+						spriteStart.y = 24 * 2;
+					}
+				}
+				else
+				{
+					if (velocity.mX > 0)
+					{
+						m_sprite.setScale(6.0f, 6.0f);
+						spriteStart.x = 24 * 12;
+						spriteStart.y = 24 * 2;
+					}
+					else
+					{
+						m_sprite.setScale(-6.0f, 6.0f);
+						spriteStart.x = 24 * 12;
+						spriteStart.y = 24 * 2;
+					}
+				}
+			}
 		}
 
+		if (m_sprite.getTextureRect().left < spriteStart.x)
+		{
+			rectSourceSprite.left = spriteStart.x;
+			rectSourceSprite.top = spriteStart.y;
+			m_sprite.setTextureRect(rectSourceSprite);
+		}
+
+		//m_sprite.getTextureRect().left
 		if (m_sprite.getTextureRect().left > spriteStart.x + (24 * 2))
 		{
 			rectSourceSprite.left = spriteStart.x;
 			rectSourceSprite.top = spriteStart.y;
 		}
-		else 
+		else
 		{
 			rectSourceSprite.left += 24;
 		}

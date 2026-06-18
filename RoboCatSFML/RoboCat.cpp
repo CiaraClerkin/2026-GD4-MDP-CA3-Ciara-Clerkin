@@ -11,6 +11,7 @@ RoboCat::RoboCat() :
 	mWallRestitution(0.1f),
 	mCatRestitution(0.1f),
 	mThrustDir(0.f),
+	mThrustSide(0.f),
 	mPlayerId(0),
 	mIsShooting(false),
 	mHealth(10)
@@ -223,6 +224,16 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write(mThrustDir > 0.f);
 	}
 	else
+	{
+		inOutputStream.Write(false);
+	}
+
+	if (mThrustSide != 0.f)
+	{
+		inOutputStream.Write(true);
+		inOutputStream.Write(mThrustSide > 0.f);
+	}
+	else 
 	{
 		inOutputStream.Write(false);
 	}

@@ -9,6 +9,7 @@ public:
 private:
 	sf::IntRect rectSourceSprite;
 	sf::Vector2i spriteStart;
+	bool isChanged;
 	sf::Clock clock;
 };
 
