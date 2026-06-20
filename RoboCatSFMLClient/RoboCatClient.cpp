@@ -112,6 +112,17 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 		mThrustDir = 0.f;
 	}
 
+	/*inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		inInputStream.Read(stateBit);
+		SetZOrder(stateBit ? 1.f : -1.f);
+	}
+	else
+	{
+		SetZOrder(0.f);
+	}*/
+
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{

@@ -48,15 +48,18 @@ int RenderManager::GetComponentIndex(SpriteComponent* inComponent) const
 	return -1;
 }
 
-
 //this part that renders the world is really a camera-
 //in a more detailed engine, we'd have a list of cameras, and then render manager would
 //render the cameras in order
 void RenderManager::RenderComponents()
 {
+	// We sort the Sprite Components by the ZOrder of their Game Object so that we can draw them on screen in the right order.
+	// My Google search for Z-Order in SFML came up with AI code for this and I used it as a reference and adapted it to the project, so technically AI usage here.
+	std::sort(mComponents.begin(), mComponents.end(), [](SpriteComponent*& a, SpriteComponent*& b) { return a->GetGameObject()->GetZOrder() > b->GetGameObject()->GetZOrder(); });
+	
 	//Get the logical viewport so we can pass this to the SpriteComponents when it's draw time
 	for (SpriteComponent* c : mComponents)
-	{	
+	{
 		WindowManager::sInstance->draw(c->GetSprite());
 	}
 }

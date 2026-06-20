@@ -16,7 +16,7 @@ RoboCat::RoboCat() :
 	mIsShooting(false),
 	mHealth(10)
 {
-	SetCollisionRadius(60.f);
+	SetCollisionRadius(36.f);
 }
 
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
@@ -95,6 +95,18 @@ void RoboCat::ProcessCollisions()
 
 				if (target->HandleCollisionWithCat(this))
 				{
+					// Setting the Z-Order of Game Objects for accurate depth.
+					if (target->GetLocation().mY > this->GetLocation().mY)
+					{
+						target->SetZOrder(4);
+						this->SetZOrder(110);
+					}
+					else 
+					{
+						target->SetZOrder(110);
+						this->SetZOrder(4);
+					}
+
 					//okay, you hit something!
 					//so, project your location far enough that you're not colliding
 					Vector3 dirToTarget = delta;
@@ -102,7 +114,6 @@ void RoboCat::ProcessCollisions()
 					Vector3 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
 					//important note- we only move this cat. the other cat can take care of moving itself
 					SetLocation(targetLocation - acceptableDeltaFromSourceToTarget);
-
 
 					Vector3 relVel = mVelocity;
 

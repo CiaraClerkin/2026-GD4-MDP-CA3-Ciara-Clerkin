@@ -16,6 +16,8 @@ public:
 
 	virtual void Update(Vector3 velocity);
 
+	GameObject* GetGameObject() { return mGameObject; };
+
 	/*void frameRight();
 	void frameLeft();
 	void animate(float dt = 0.016667);
