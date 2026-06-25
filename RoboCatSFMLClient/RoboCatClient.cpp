@@ -23,6 +23,7 @@ void RoboCatClient::HandleDying()
 
 void RoboCatClient::Update()
 {
+
 	mSpriteComponent->Update(GetVelocity());
 
 	//is this the cat owned by us?
@@ -200,7 +201,6 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t i
 		}
 	}
 }
-
 
 void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const Vector3 & inOldLocation, const Vector3 & inOldVelocity, bool inIsForRemoteCat)
 {

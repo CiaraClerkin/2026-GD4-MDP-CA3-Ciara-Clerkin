@@ -61,6 +61,16 @@ void RenderManager::RenderComponents()
 	for (SpriteComponent* c : mComponents)
 	{
 		WindowManager::sInstance->draw(c->GetSprite());
+		if (dynamic_cast<RoboCat*>(c->GetGameObject()))
+		{
+			// wherever player movement happens?
+			if (dynamic_cast<RoboCat*>(c->GetGameObject())->GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+			{
+				//view.setCenter(std::round(c->GetGameObject()->GetLocation().mX), std::round(c->GetGameObject()->GetLocation().mY));
+				view.setCenter(c->GetGameObject()->GetLocation().mX, c->GetGameObject()->GetLocation().mY);
+				WindowManager::sInstance->setView(view);
+			}
+		}
 	}
 }
 
