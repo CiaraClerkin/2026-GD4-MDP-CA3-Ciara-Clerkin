@@ -9,6 +9,17 @@ RoboCatClient::RoboCatClient() :
 	//mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("cat"));
 }
 
+void RoboCatClient::SetZombie()
+{
+	isZombie = true;
+	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("zombie"));
+}
+
+bool RoboCatClient::GetZombie()
+{
+	return isZombie;
+}
+
 void RoboCatClient::HandleDying()
 {
 	RoboCat::HandleDying();
@@ -178,6 +189,23 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 			InterpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, true);
 		}
 
+	}
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		int spriteName;
+		inInputStream.Read(spriteName);
+		readState |= ECRS_Zombie;
+	
+		//if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+		//{
+			//are we a zombie now? set sprite to zombie
+			if (spriteName == 1)
+			{
+				SetZombie();
+			}
+		//}
 	}
 }
 

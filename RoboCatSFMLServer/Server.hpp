@@ -14,6 +14,7 @@ public:
 	RoboCatPtr	GetCatForPlayer(int inPlayerId);
 	void	SpawnCatForPlayer(int inPlayerId);
 
+	
 
 private:
 	Server();
@@ -21,5 +22,6 @@ private:
 	bool	InitNetworkManager();
 	void	SetupWorld();
 
+	bool isFirstPlayer;
 };
 

@@ -9,7 +9,6 @@
 bool Server::StaticInit()
 {
 	s_instance.reset(new Server());
-
 	return true;
 }
 
@@ -30,6 +29,8 @@ Server::Server()
 		latency = stof(latencyString);
 	}
 	NetworkManagerServer::sInstance->SetSimulatedLatency(latency);
+
+	bool isFirstPlayer(true);
 }
 
 
@@ -110,6 +111,12 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
 	cat->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
+
+	if (isFirstPlayer)
+	{
+		cat->SetIsZombie();
+		isFirstPlayer = false;
+	}
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)

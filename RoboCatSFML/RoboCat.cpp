@@ -14,7 +14,9 @@ RoboCat::RoboCat() :
 	mThrustSide(0.f),
 	mPlayerId(0),
 	mIsShooting(false),
-	mHealth(10)
+	mIsZombie(false),
+	mHealth(10),
+	firstTime(true)
 {
 	SetCollisionRadius(36.f);
 }
@@ -95,6 +97,13 @@ void RoboCat::ProcessCollisions()
 
 				if (target->HandleCollisionWithCat(this))
 				{
+					if (dynamic_cast<RoboCat*>(target))
+					{
+						dynamic_cast<RoboCat*>(target)->SetIsZombie();
+						firstTime = true;
+					}
+					
+
 					// Setting the Z-Order of Game Objects for accurate depth.
 					if (target->GetLocation().mY > this->GetLocation().mY)
 					{
@@ -199,6 +208,8 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write((bool)true);
 		inOutputStream.Write(GetPlayerId());
 
+		firstTime = true;
+
 		writtenState |= ECRS_PlayerId;
 	}
 	else
@@ -267,6 +278,20 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write(mHealth, 4);
 
 		writtenState |= ECRS_Health;
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}
+
+	if (mIsZombie && firstTime)
+	{
+		inOutputStream.Write((bool)true);
+		inOutputStream.Write(1);
+
+		//writtenState |= ECRS_Zombie;
+	
+		firstTime = false;
 	}
 	else
 	{

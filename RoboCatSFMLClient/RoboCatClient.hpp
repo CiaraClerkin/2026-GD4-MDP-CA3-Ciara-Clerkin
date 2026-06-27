@@ -4,7 +4,11 @@ public:
 	static	GameObjectPtr	StaticCreate() { return GameObjectPtr(new RoboCatClient()); }
 
 	virtual void Update();
-	virtual void	HandleDying() override;
+
+	virtual void SetZombie();
+	virtual bool GetZombie();
+
+	virtual void HandleDying() override;
 
 	virtual void	Read(InputMemoryBitStream& inInputStream) override;
 
@@ -21,5 +25,8 @@ private:
 	float				mTimeVelocityBecameOutOfSync;
 
 	SpriteComponentPtr	mSpriteComponent;
+	std::string spriteName;
+
+	bool isZombie;
 };
 

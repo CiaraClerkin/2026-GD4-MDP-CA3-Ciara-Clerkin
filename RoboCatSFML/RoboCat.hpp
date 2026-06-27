@@ -9,8 +9,9 @@ public:
 		ECRS_Color = 1 << 1,
 		ECRS_PlayerId = 1 << 2,
 		ECRS_Health = 1 << 3,
+		ECRS_Zombie = 1 << 4,
 
-		ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health
+		ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health | ECRS_Zombie
 	};
 
 
@@ -33,6 +34,9 @@ public:
 
 	void			SetVelocity(const Vector3& inVelocity) { mVelocity = inVelocity; }
 	const Vector3& GetVelocity()						const { return mVelocity; }
+
+	bool GetIsZombie() { return mIsZombie; }
+	void SetIsZombie() { mIsZombie = true; }
 
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
@@ -57,6 +61,8 @@ private:
 
 	uint32_t			mPlayerId;
 
+	mutable bool firstTime;
+
 protected:
 
 	///move down here for padding reasons...
@@ -68,6 +74,8 @@ protected:
 	int					mHealth;
 
 	bool				mIsShooting;
+
+	bool				mIsZombie;
 };
 
 typedef shared_ptr< RoboCat >	RoboCatPtr;
