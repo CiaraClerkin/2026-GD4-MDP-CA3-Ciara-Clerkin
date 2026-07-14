@@ -18,6 +18,8 @@ public:
 
 	void			RespawnCats();
 
+	void			Timer();
+
 	ClientProxyPtr	GetClientProxy(int inPlayerId) const;
 
 private:

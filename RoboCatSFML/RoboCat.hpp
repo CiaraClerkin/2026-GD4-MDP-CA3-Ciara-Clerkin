@@ -38,6 +38,11 @@ public:
 	bool GetIsZombie() { return mIsZombie; }
 	void SetIsZombie() { mIsZombie = true; }
 
+	bool AreAllZombies();
+
+	void SetFirstTime(bool inFirstTime);
+	bool GetFirstTime();
+
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
 protected:

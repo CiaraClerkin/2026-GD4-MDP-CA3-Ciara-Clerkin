@@ -194,17 +194,21 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{
-		int spriteName;
-		inInputStream.Read(spriteName);
-		readState |= ECRS_Zombie;
+		int spriteNum;
+		inInputStream.Read(spriteNum);
+		//readState |= ECRS_Zombie;
 	
 		//if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
 		//{
 			//are we a zombie now? set sprite to zombie
-			if (spriteName == 1)
+		if (spriteNum == 1)
+		{
+			if (!GetZombie())
 			{
 				SetZombie();
+				SetFirstTime(false);
 			}
+		}
 		//}
 	}
 }

@@ -66,7 +66,7 @@ void PlayerSpriteComponent::Update(Vector3 velocity)
 				}
 				else if (velocity.mY < 0)
 				{
-					spriteStart.x = 384;
+					spriteStart.x = 24 * 16;
 					spriteStart.y = 24 * 2;
 				}
 			}

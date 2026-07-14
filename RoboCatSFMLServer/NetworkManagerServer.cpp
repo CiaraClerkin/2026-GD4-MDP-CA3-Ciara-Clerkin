@@ -1,4 +1,5 @@
 #include "RoboCatServerPCH.hpp"
+#include <iostream>
 
 NetworkManagerServer* NetworkManagerServer::sInstance;
 
@@ -127,6 +128,7 @@ void NetworkManagerServer::RespawnCats()
 		clientProxy->RespawnCatIfNecessary();
 	}
 }
+
 
 void NetworkManagerServer::SendOutgoingPackets()
 {

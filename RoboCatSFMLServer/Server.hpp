@@ -14,6 +14,8 @@ public:
 	RoboCatPtr	GetCatForPlayer(int inPlayerId);
 	void	SpawnCatForPlayer(int inPlayerId);
 
+	bool AreAllZombies();
+
 	
 
 private:
@@ -22,6 +24,6 @@ private:
 	bool	InitNetworkManager();
 	void	SetupWorld();
 
-	bool isFirstPlayer;
+	bool	isFirstPlayer;
 };
 

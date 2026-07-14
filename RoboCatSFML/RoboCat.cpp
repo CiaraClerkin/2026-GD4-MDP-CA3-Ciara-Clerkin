@@ -1,4 +1,5 @@
 #include "RoboCatPCH.hpp"
+#include <iostream>
 
 const float WORLD_HEIGHT = 720.f;
 const float WORLD_WIDTH = 1280.f;
@@ -99,11 +100,29 @@ void RoboCat::ProcessCollisions()
 				{
 					if (dynamic_cast<RoboCat*>(target))
 					{
-						dynamic_cast<RoboCat*>(target)->SetIsZombie();
-						firstTime = true;
+						if (dynamic_cast<RoboCat*>(target)->GetIsZombie())
+						{
+							this->SetIsZombie();
+							firstTime = true;
+
+							if (AreAllZombies())
+							{
+								std::cout << "EVERYONE IS A ZOMBIE!" << std::endl;
+							}
+						}
+
+						/*if (this->GetIsZombie())
+						{
+							dynamic_cast<RoboCat*>(target)->SetIsZombie();
+							firstTime = true;
+
+							if (AreAllZombies())
+							{
+								std::cout << "EVERYONE IS A ZOMBIE!" << std::endl;
+							}
+						}*/
 					}
 					
-
 					// Setting the Z-Order of Game Objects for accurate depth.
 					if (target->GetLocation().mY > this->GetLocation().mY)
 					{
@@ -199,6 +218,31 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
 	}
 }
 
+bool RoboCat::AreAllZombies()
+{
+	bool areAllZombies = true;
+	
+	for (auto goIt = World::sInstance->GetGameObjects().begin(), end = World::sInstance->GetGameObjects().end(); goIt != end; ++goIt)
+	{
+		if (dynamic_cast<RoboCat*>(goIt->get()) && !dynamic_cast<RoboCat*>(goIt->get())->GetIsZombie())
+		{
+			areAllZombies = false;
+		}
+	}
+
+	return areAllZombies;
+}
+
+void RoboCat::SetFirstTime(bool inFirstTime)
+{
+	firstTime = inFirstTime;
+}
+
+bool RoboCat::GetFirstTime()
+{
+	return firstTime;
+}
+
 uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
 {
 	uint32_t writtenState = 0;
@@ -290,8 +334,6 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write(1);
 
 		//writtenState |= ECRS_Zombie;
-	
-		firstTime = false;
 	}
 	else
 	{

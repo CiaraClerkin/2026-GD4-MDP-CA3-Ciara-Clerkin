@@ -83,6 +83,7 @@ void Server::SetupWorld()
 
 void Server::DoFrame()
 {
+
 	NetworkManagerServer::sInstance->ProcessIncomingPackets();
 
 	NetworkManagerServer::sInstance->CheckForDisconnects();
@@ -110,7 +111,7 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
+	cat->SetLocation(Vector3(6000.f - (static_cast<float>(inPlayerId) * 400), 400.f, 0.f));
 
 	if (isFirstPlayer)
 	{
@@ -152,4 +153,20 @@ RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
 
 	return nullptr;
 
+}
+
+bool Server::AreAllZombies()
+{
+	const auto& gameObjects = World::sInstance->GetGameObjects();
+	for (int i = 0, c = gameObjects.size(); i < c; ++i)
+	{
+		GameObjectPtr go = gameObjects[i];
+		RoboCat* cat = go->GetAsCat();
+		if (!cat->GetIsZombie())
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
