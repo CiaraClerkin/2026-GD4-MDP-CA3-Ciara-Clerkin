@@ -81,6 +81,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	if (stateBit)
 	{
 		uint32_t playerId;
+		float time;
 		inInputStream.Read(playerId);
 		SetPlayerId(playerId);
 		readState |= ECRS_PlayerId;
@@ -211,6 +212,32 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 		}
 		//}
 	}
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		int num;
+		inInputStream.Read(num);
+		//readState |= ECRS_Zombie;
+
+		//if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+		//{
+			//are we a zombie now? set sprite to zombie
+		if (num == 1)
+		{
+			HUD::sInstance->SetTimer("Zombies Win!");
+		}
+		//}
+	}
+
+	/*inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		float time;
+		inInputStream.Read(time);
+		HUD::sInstance->SetTimer(std::floor(time));
+		
+	}*/
 }
 
 void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)

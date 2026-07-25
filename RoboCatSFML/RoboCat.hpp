@@ -38,6 +38,12 @@ public:
 	bool GetIsZombie() { return mIsZombie; }
 	void SetIsZombie() { mIsZombie = true; }
 
+	void SetTimer(float timer) { time = timer; }
+	//sf::Clock GetTimer() { return m_GameTimer; }
+
+	void SetFirstPlayer(bool firstPlayer) { mFirstPlayer = firstPlayer; }
+	bool GetFirstPlayer() { return mFirstPlayer; }
+
 	bool AreAllZombies();
 
 	void SetFirstTime(bool inFirstTime);
@@ -67,6 +73,7 @@ private:
 	uint32_t			mPlayerId;
 
 	mutable bool firstTime;
+	mutable bool mFirstPlayer;
 
 protected:
 
@@ -81,6 +88,8 @@ protected:
 	bool				mIsShooting;
 
 	bool				mIsZombie;
+	float				time;
+	bool				mAreAllZombies;
 };
 
 typedef shared_ptr< RoboCat >	RoboCatPtr;

@@ -1,5 +1,9 @@
 #include "RoboCatPCH.hpp"
 #include <iostream>
+#include <chrono>
+#include <thread>
+
+using namespace std::chrono_literals;
 
 const float WORLD_HEIGHT = 720.f;
 const float WORLD_WIDTH = 1280.f;
@@ -17,7 +21,10 @@ RoboCat::RoboCat() :
 	mIsShooting(false),
 	mIsZombie(false),
 	mHealth(10),
-	firstTime(true)
+	firstTime(true),
+	mFirstPlayer(false),
+	mAreAllZombies(false),
+	time(5.f)
 {
 	SetCollisionRadius(36.f);
 }
@@ -64,7 +71,11 @@ void RoboCat::SimulateMovement(float inDeltaTime)
 
 void RoboCat::Update()
 {
-
+	/*if (!mFirstPlayer)
+	{
+		std::this_thread::sleep_for(1000ms);
+		time += 1;
+	}*/
 }
 
 void RoboCat::ProcessCollisions()
@@ -107,6 +118,7 @@ void RoboCat::ProcessCollisions()
 
 							if (AreAllZombies())
 							{
+								mAreAllZombies = true;
 								std::cout << "EVERYONE IS A ZOMBIE!" << std::endl;
 							}
 						}
@@ -339,6 +351,28 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	{
 		inOutputStream.Write((bool)false);
 	}
+
+	if (mAreAllZombies)
+	{
+		inOutputStream.Write((bool)true);
+		inOutputStream.Write(1);
+
+		//writtenState |= ECRS_Zombie;
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}
+
+	/*if (!mFirstPlayer)
+	{
+		inOutputStream.Write((bool)true);
+		inOutputStream.Write(time);
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}*/
 
 	return writtenState;
 

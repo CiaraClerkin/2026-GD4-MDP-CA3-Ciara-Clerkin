@@ -3,7 +3,6 @@
 #include <iostream>
 
 
-
 //uncomment this when you begin working on the server
 
 bool Server::StaticInit()
@@ -17,6 +16,7 @@ Server::Server()
 
 	GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatServer::StaticCreate);
 	GameObjectRegistry::sInstance->RegisterCreationFunction('MOUS', MouseServer::StaticCreate);
+	GameObjectRegistry::sInstance->RegisterCreationFunction('GTIM', MouseServer::StaticCreate);
 	GameObjectRegistry::sInstance->RegisterCreationFunction('YARN', YarnServer::StaticCreate);
 
 	InitNetworkManager();
@@ -31,6 +31,8 @@ Server::Server()
 	NetworkManagerServer::sInstance->SetSimulatedLatency(latency);
 
 	bool isFirstPlayer(true);
+	//sf::Clock m_timer();
+
 }
 
 
@@ -67,8 +69,6 @@ namespace
 			go->SetLocation(mouseLocation);
 		}
 	}
-
-
 }
 
 
@@ -111,13 +111,17 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(6000.f - (static_cast<float>(inPlayerId) * 400), 400.f, 0.f));
+	cat->SetLocation(Vector3(0.f + (static_cast<float>(inPlayerId) * 100), 500.f, 0.f));
 
 	if (isFirstPlayer)
 	{
 		cat->SetIsZombie();
+		cat->SetFirstPlayer(true);
 		isFirstPlayer = false;
+		//m_timer.restart();
 	}
+
+	//cat->SetTimer(10);
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)

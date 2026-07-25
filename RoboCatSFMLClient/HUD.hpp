@@ -10,6 +10,7 @@ public:
 	void Render();
 
 	void SetPlayerHealth(int inHealth) { mHealth = inHealth; }
+	void SetTimer(std::string inTimer) { mTimer = inTimer; }
 
 private:
 
@@ -20,6 +21,7 @@ private:
 	void	RenderScoreBoard();
 	void	RenderHealth();
 	void	RenderText(const string& inStr, const Vector3& origin, const Vector3& inColor);
+	void	RenderTimer();
 
 	Vector3										mBandwidthOrigin;
 	Vector3										mRoundTripTimeOrigin;
@@ -27,6 +29,7 @@ private:
 	Vector3										mScoreOffset;
 	Vector3										mHealthOffset;
 	int											mHealth;
+	std::string									mTimer;
 };
 
 
