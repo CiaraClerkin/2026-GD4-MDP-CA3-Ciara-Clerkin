@@ -20,8 +20,9 @@ private:
 	void	RenderRoundTripTime();
 	void	RenderScoreBoard();
 	void	RenderHealth();
-	void	RenderText(const string& inStr, const Vector3& origin, const Vector3& inColor);
+	void	RenderText(const string& inStr, const Vector3& origin, const Vector3& inColor, const int size=50);
 	void	RenderTimer();
+	void	RenderEndScreen();
 
 	Vector3										mBandwidthOrigin;
 	Vector3										mRoundTripTimeOrigin;

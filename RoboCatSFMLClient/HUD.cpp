@@ -25,7 +25,11 @@ void HUD::Render()
 	RenderRoundTripTime();
 	RenderScoreBoard();
 	//RenderHealth();
-	RenderTimer();
+	//RenderTimer();
+	if (mTimer != "Running")
+	{
+		RenderEndScreen();
+	}
 }
 
 void HUD::RenderHealth()
@@ -82,16 +86,25 @@ void HUD::RenderTimer()
 	//else
 	//{
 		//RenderText(std::to_string(mTimer.getElapsedTime().asSeconds()), { 200.f, 60.f, 0.0f }, Colors::White);
-		RenderText(mTimer, { 400.f + WindowManager::sInstance->getView().getCenter().x, +WindowManager::sInstance->getView().getCenter().y - 350, 0.0f }, Colors::White);
 	//}
 }
 
-void HUD::RenderText(const string& inStr, const Vector3& origin, const Vector3& inColor)
+void HUD::RenderEndScreen()
+{
+	sf::RectangleShape rect;
+	rect.setSize(sf::Vector2f(WindowManager::sInstance->getSize().x, WindowManager::sInstance->getSize().y));
+	rect.setFillColor(sf::Color(0, 0, 30, 80));
+	rect.setPosition(WindowManager::sInstance->getView().getCenter().x - WindowManager::sInstance->getSize().x/2, WindowManager::sInstance->getView().getCenter().y - WindowManager::sInstance->getSize().y/2);
+	WindowManager::sInstance->draw(rect);
+	RenderText(mTimer, { WindowManager::sInstance->getView().getCenter().x - (50 * mTimer.length())/2, +WindowManager::sInstance->getView().getCenter().y - 50, 0.0f}, Colors::White, 100);
+}
+
+void HUD::RenderText(const string& inStr, const Vector3& origin, const Vector3& inColor, const int size)
 {
 	sf::Text text;
 	text.setString(inStr);
 	text.setFillColor(sf::Color(inColor.mX, inColor.mY, inColor.mZ, 255));
-	text.setCharacterSize(50);
+	text.setCharacterSize(size);
 	text.setPosition(origin.mX, origin.mY);
 	text.setFont(*FontManager::sInstance->GetFont("carlito"));
 	WindowManager::sInstance->draw(text);
