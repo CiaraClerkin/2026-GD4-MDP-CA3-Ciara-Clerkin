@@ -9,10 +9,10 @@ HUD::HUD() :
 	mScoreOffset(0.f + WindowManager::sInstance->getView().getCenter().x, 10.f + WindowManager::sInstance->getView().getCenter().y, 0.0f),
 	mHealthOffset(1000 + WindowManager::sInstance->getView().getCenter().x, 10.f + WindowManager::sInstance->getView().getCenter().y, 0.0f),
 	mHealth(0),
-	mTimer("Running")
+	mEndText("Running"),
+	mTimer(0)
 {
 }
-
 
 void HUD::StaticInit()
 {
@@ -25,8 +25,8 @@ void HUD::Render()
 	RenderRoundTripTime();
 	RenderScoreBoard();
 	//RenderHealth();
-	//RenderTimer();
-	if (mTimer != "Running")
+	RenderTimer();
+	if (mEndText != "Running")
 	{
 		RenderEndScreen();
 	}
@@ -78,6 +78,7 @@ void HUD::RenderScoreBoard()
 
 void HUD::RenderTimer()
 {
+	RenderText(std::to_string(mTimer), { 500.f + WindowManager::sInstance->getView().getCenter().x, +WindowManager::sInstance->getView().getCenter().y - 350, 0.0f }, Colors::White);
 	//NetworkManager::
 	//if (mTimer > 120)
 	//{
@@ -96,7 +97,7 @@ void HUD::RenderEndScreen()
 	rect.setFillColor(sf::Color(0, 0, 30, 80));
 	rect.setPosition(WindowManager::sInstance->getView().getCenter().x - WindowManager::sInstance->getSize().x/2, WindowManager::sInstance->getView().getCenter().y - WindowManager::sInstance->getSize().y/2);
 	WindowManager::sInstance->draw(rect);
-	RenderText(mTimer, { WindowManager::sInstance->getView().getCenter().x - (50 * mTimer.length())/2, +WindowManager::sInstance->getView().getCenter().y - 50, 0.0f}, Colors::White, 100);
+	RenderText(mEndText, { WindowManager::sInstance->getView().getCenter().x - (50 * mEndText.length())/2, +WindowManager::sInstance->getView().getCenter().y - 50, 0.0f}, Colors::White, 100);
 }
 
 void HUD::RenderText(const string& inStr, const Vector3& origin, const Vector3& inColor, const int size)

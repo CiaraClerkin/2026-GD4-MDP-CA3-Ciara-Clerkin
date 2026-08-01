@@ -2,6 +2,9 @@
 #include "RoboCatServerPCH.hpp"
 #include <iostream>
 
+//#include <chrono>
+//#include <thread>
+//using namespace std::chrono_literals;
 
 //uncomment this when you begin working on the server
 
@@ -94,10 +97,14 @@ void Server::DoFrame()
 
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
 
+	//std::this_thread::sleep_for(1000ms);
+	//m_timer++;
+
 }
 
 void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 {
+	//UnSetLatestPlayer();
 
 	int playerId = inClientProxy->GetPlayerId();
 
@@ -116,11 +123,14 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 	if (isFirstPlayer)
 	{
 		cat->SetIsZombie();
-		cat->SetFirstPlayer(true);
 		isFirstPlayer = false;
 		//m_timer.restart();
 	}
 
+	//cat->AlertRestartClocks();
+
+	//m_timer = 0;
+	//cat->SetLatestPlayer();
 	//cat->SetTimer(10);
 }
 
@@ -159,7 +169,7 @@ RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
 
 }
 
-bool Server::AreAllZombies()
+/*bool Server::AreAllZombies()
 {
 	const auto& gameObjects = World::sInstance->GetGameObjects();
 	for (int i = 0, c = gameObjects.size(); i < c; ++i)
@@ -174,3 +184,14 @@ bool Server::AreAllZombies()
 
 	return true;
 }
+
+void Server::UnSetLatestPlayer()
+{
+	const auto& gameObjects = World::sInstance->GetGameObjects();
+	for (int i = 0, c = gameObjects.size(); i < c; ++i)
+	{
+		GameObjectPtr go = gameObjects[i];
+		RoboCat* cat = go->GetAsCat();
+		cat->SetLatestPlayer(false);
+	}
+}*/

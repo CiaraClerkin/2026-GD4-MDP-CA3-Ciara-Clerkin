@@ -1,9 +1,5 @@
 #include "RoboCatPCH.hpp"
 #include <iostream>
-#include <chrono>
-#include <thread>
-
-using namespace std::chrono_literals;
 
 const float WORLD_HEIGHT = 720.f;
 const float WORLD_WIDTH = 1280.f;
@@ -22,11 +18,14 @@ RoboCat::RoboCat() :
 	mIsZombie(false),
 	mHealth(10),
 	firstTime(true),
-	mFirstPlayer(false),
+	mLatestPlayer(false),
 	mAreAllZombies(false),
-	time(5.f)
+	mIsClockPendingRestart(false)
 {
-	SetCollisionRadius(36.f);
+	SetCollisionRadius(24.f);
+	//SetLatestPlayer();
+	//mLatestPlayer = true;
+	AlertRestartClocks();
 }
 
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
@@ -71,11 +70,7 @@ void RoboCat::SimulateMovement(float inDeltaTime)
 
 void RoboCat::Update()
 {
-	/*if (!mFirstPlayer)
-	{
-		std::this_thread::sleep_for(1000ms);
-		time += 1;
-	}*/
+	
 }
 
 void RoboCat::ProcessCollisions()
@@ -245,14 +240,26 @@ bool RoboCat::AreAllZombies()
 	return areAllZombies;
 }
 
-void RoboCat::SetFirstTime(bool inFirstTime)
+void RoboCat::SetLatestPlayer()
 {
-	firstTime = inFirstTime;
+	for (auto goIt = World::sInstance->GetGameObjects().begin(), end = World::sInstance->GetGameObjects().end(); goIt != end; ++goIt)
+	{
+		if (dynamic_cast<RoboCat*>(goIt->get()) && dynamic_cast<RoboCat*>(goIt->get())->GetIsLatestPlayer())
+		{
+			dynamic_cast<RoboCat*>(goIt->get())->SetIsLatestPlayer(false);
+		}
+	}
 }
 
-bool RoboCat::GetFirstTime()
+void RoboCat::AlertRestartClocks()
 {
-	return firstTime;
+	for (auto goIt = World::sInstance->GetGameObjects().begin(), end = World::sInstance->GetGameObjects().end(); goIt != end; ++goIt)
+	{
+		if (dynamic_cast<RoboCat*>(goIt->get()))
+		{
+			dynamic_cast<RoboCat*>(goIt->get())->SetIsClockPendingRestart(true);
+		}
+	}
 }
 
 uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
@@ -265,6 +272,7 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write(GetPlayerId());
 
 		firstTime = true;
+		clockFirstTime = true;
 
 		writtenState |= ECRS_PlayerId;
 	}
@@ -364,18 +372,27 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write((bool)false);
 	}
 
-	/*if (!mFirstPlayer)
+	/*if (mLatestPlayer)
 	{
 		inOutputStream.Write((bool)true);
-		inOutputStream.Write(time);
 	}
 	else
 	{
 		inOutputStream.Write((bool)false);
 	}*/
+	
+	if (mIsClockPendingRestart)
+	{
+		inOutputStream.Write((bool)true);
+		//inOutputStream.Write(1);
+		//inOutputStream.Write(true);
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}
 
 	return writtenState;
-
 
 }
 

@@ -1,3 +1,4 @@
+
 class Server : public Engine
 {
 public:
@@ -14,8 +15,9 @@ public:
 	RoboCatPtr	GetCatForPlayer(int inPlayerId);
 	void	SpawnCatForPlayer(int inPlayerId);
 
-	bool AreAllZombies();
+	//bool AreAllZombies();
 
+	//void UnSetLatestPlayer();
 	
 
 private:
@@ -25,5 +27,6 @@ private:
 	void	SetupWorld();
 
 	bool	isFirstPlayer;
+	//int		m_timer;
 };
 

@@ -15,6 +15,8 @@ public:
 	void DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState);
 	void DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
 
+	void RestartClock();
+
 protected:
 	RoboCatClient();
 
@@ -28,5 +30,6 @@ private:
 	std::string spriteName;
 
 	bool isZombie;
+	sf::Clock mClock;
 };
 

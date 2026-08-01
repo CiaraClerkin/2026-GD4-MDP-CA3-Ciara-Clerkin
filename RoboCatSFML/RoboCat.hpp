@@ -38,16 +38,26 @@ public:
 	bool GetIsZombie() { return mIsZombie; }
 	void SetIsZombie() { mIsZombie = true; }
 
-	void SetTimer(float timer) { time = timer; }
+	//void SetTimer(float timer) { time = timer; }
 	//sf::Clock GetTimer() { return m_GameTimer; }
 
-	void SetFirstPlayer(bool firstPlayer) { mFirstPlayer = firstPlayer; }
-	bool GetFirstPlayer() { return mFirstPlayer; }
+	void SetIsLatestPlayer(bool inLatestPlayer) { mLatestPlayer = inLatestPlayer; }
+	bool GetIsLatestPlayer() { return mLatestPlayer; }
+
+	void SetLatestPlayer();
 
 	bool AreAllZombies();
 
-	void SetFirstTime(bool inFirstTime);
-	bool GetFirstTime();
+	void SetFirstTime(bool inFirstTime) { firstTime = inFirstTime; }
+	bool GetFirstTime() { return firstTime; }
+
+	void SetClockFirstTime(bool inFirstTime) { clockFirstTime = inFirstTime; }
+	bool GetClockFirstTime() { return clockFirstTime; }
+
+	void SetIsClockPendingRestart(bool inPending) { mIsClockPendingRestart = inPending; }
+	bool GetIsClockPendingRestart() { return mIsClockPendingRestart; }
+
+	void AlertRestartClocks();
 
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
@@ -72,8 +82,10 @@ private:
 
 	uint32_t			mPlayerId;
 
-	mutable bool firstTime;
-	mutable bool mFirstPlayer;
+	mutable bool		firstTime;
+	mutable bool		mLatestPlayer;
+	mutable bool		mIsClockPendingRestart;
+	mutable bool		clockFirstTime;
 
 protected:
 
@@ -88,7 +100,6 @@ protected:
 	bool				mIsShooting;
 
 	bool				mIsZombie;
-	float				time;
 	bool				mAreAllZombies;
 };
 

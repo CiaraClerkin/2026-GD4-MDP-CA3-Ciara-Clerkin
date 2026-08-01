@@ -31,17 +31,38 @@ void RoboCatClient::HandleDying()
 	}
 }
 
+void RoboCatClient::RestartClock()
+{
+	mClock.restart();
+}
 
 void RoboCatClient::Update()
 {
+	//if (mLatestPlayer)
+	//{
+		//std::this_thread::sleep_for(1000ms);
+		//time += 1;
+		//HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
+	//}
+
 
 	mSpriteComponent->Update(GetVelocity());
+
+	if (mClock.getElapsedTime().asSeconds() > 20)
+	{
+		HUD::sInstance->SetEndText("Survivors Win!");
+	}
+	else
+	{
+		HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
+	}
 
 	//is this the cat owned by us?
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
 	{
-		
+		//HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
 
+		//HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
 		const Move* pendingMove = InputManager::sInstance->GetAndClearPendingMove();
 		//in theory, only do this if we want to sample input this frame / if there's a new move ( since we have to keep in sync with server )
 		if (pendingMove) //is it time to sample a new move...
@@ -225,7 +246,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 			//are we a zombie now? set sprite to zombie
 		if (num == 1)
 		{
-			HUD::sInstance->SetTimer("Zombies Win!");
+			HUD::sInstance->SetEndText("Zombies Win!");
 		}
 		//}
 	}
@@ -233,11 +254,22 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	/*inInputStream.Read(stateBit);
 	if (stateBit)
 	{
-		float time;
-		inInputStream.Read(time);
-		HUD::sInstance->SetTimer(std::floor(time));
-		
+		if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+		{
+			RestartClock();
+			SetIsClockPendingRestart(false);
+		}
 	}*/
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		//int spriteNum;
+		//inInputStream.Read(spriteNum);
+		
+		RestartClock();
+		SetIsClockPendingRestart(false);
+	}
 }
 
 void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)

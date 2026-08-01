@@ -10,7 +10,8 @@ public:
 	void Render();
 
 	void SetPlayerHealth(int inHealth) { mHealth = inHealth; }
-	void SetTimer(std::string inTimer) { mTimer = inTimer; }
+	void SetEndText(std::string inTimer) { mEndText = inTimer; }
+	void SetTimer(int inTimer) { mTimer = inTimer; }
 
 private:
 
@@ -30,7 +31,8 @@ private:
 	Vector3										mScoreOffset;
 	Vector3										mHealthOffset;
 	int											mHealth;
-	std::string									mTimer;
+	std::string									mEndText;
+	int											mTimer;
 };
 
 
