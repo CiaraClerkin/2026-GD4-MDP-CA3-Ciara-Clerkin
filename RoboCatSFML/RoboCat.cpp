@@ -23,8 +23,8 @@ RoboCat::RoboCat() :
 	mIsClockPendingRestart(false)
 {
 	SetCollisionRadius(24.f);
-	//SetLatestPlayer();
-	//mLatestPlayer = true;
+	SetLatestPlayer();
+	mLatestPlayer = true;
 	AlertRestartClocks();
 }
 
@@ -384,7 +384,7 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	if (mIsClockPendingRestart)
 	{
 		inOutputStream.Write((bool)true);
-		//inOutputStream.Write(1);
+		inOutputStream.Write(1);
 		//inOutputStream.Write(true);
 	}
 	else

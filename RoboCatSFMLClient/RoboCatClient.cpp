@@ -45,8 +45,7 @@ void RoboCatClient::Update()
 		//HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
 	//}
 
-
-	mSpriteComponent->Update(GetVelocity());
+	//HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
 
 	if (mClock.getElapsedTime().asSeconds() > 20)
 	{
@@ -56,12 +55,14 @@ void RoboCatClient::Update()
 	{
 		HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
 	}
+	
+
+	mSpriteComponent->Update(GetVelocity());
 
 	//is this the cat owned by us?
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
 	{
-		//HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
-
+		
 		//HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
 		const Move* pendingMove = InputManager::sInstance->GetAndClearPendingMove();
 		//in theory, only do this if we want to sample input this frame / if there's a new move ( since we have to keep in sync with server )
@@ -264,11 +265,24 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{
-		//int spriteNum;
-		//inInputStream.Read(spriteNum);
+		int spriteNum;
+		inInputStream.Read(spriteNum);
 		
-		RestartClock();
-		SetIsClockPendingRestart(false);
+		if (spriteNum)
+		{
+			//if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+			//{
+				//RestartClock();
+				//SetIsClockPendingRestart(false);
+			//}
+			//else
+			if (!GetIsLatestPlayer()) {
+				//RestartClock();
+				mClock.restart();
+				SetIsClockPendingRestart(false);
+			}
+
+		}
 	}
 }
 

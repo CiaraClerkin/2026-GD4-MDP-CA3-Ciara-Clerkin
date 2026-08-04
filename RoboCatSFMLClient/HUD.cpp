@@ -10,7 +10,7 @@ HUD::HUD() :
 	mHealthOffset(1000 + WindowManager::sInstance->getView().getCenter().x, 10.f + WindowManager::sInstance->getView().getCenter().y, 0.0f),
 	mHealth(0),
 	mEndText("Running"),
-	mTimer(0)
+	mTimer(6)
 {
 }
 
