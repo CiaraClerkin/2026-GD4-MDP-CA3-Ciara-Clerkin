@@ -1,8 +1,8 @@
 #include "RoboCatPCH.hpp"
 #include <iostream>
 
-const float WORLD_HEIGHT = 720.f;
-const float WORLD_WIDTH = 1280.f;
+const float WORLD_HEIGHT = 2304.f;
+const float WORLD_WIDTH = 4096.f;
 
 RoboCat::RoboCat() :
 	GameObject(),
@@ -26,6 +26,7 @@ RoboCat::RoboCat() :
 	SetLatestPlayer();
 	mLatestPlayer = true;
 	AlertRestartClocks();
+	SetZOrder(-4);
 }
 
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
@@ -128,19 +129,21 @@ void RoboCat::ProcessCollisions()
 								std::cout << "EVERYONE IS A ZOMBIE!" << std::endl;
 							}
 						}*/
+
+						// Setting the Z-Order of Game Objects for accurate depth.
+						if (target->GetLocation().mY > this->GetLocation().mY)
+						{
+							target->SetZOrder(-110);
+							this->SetZOrder(-4);
+						}
+						else
+						{
+							target->SetZOrder(-4);
+							this->SetZOrder(-110);
+						}
 					}
 					
-					// Setting the Z-Order of Game Objects for accurate depth.
-					if (target->GetLocation().mY > this->GetLocation().mY)
-					{
-						target->SetZOrder(4);
-						this->SetZOrder(110);
-					}
-					else 
-					{
-						target->SetZOrder(110);
-						this->SetZOrder(4);
-					}
+					
 
 					//okay, you hit something!
 					//so, project your location far enough that you're not colliding

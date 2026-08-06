@@ -78,10 +78,12 @@ namespace
 void Server::SetupWorld()
 {
 	//spawn some random mice
-	CreateRandomMice(10);
+	//CreateRandomMice(10);
 
 	//spawn more random mice!
 	//CreateRandomMice(10);
+
+	//make a mouse somewhere- where will these come from?
 }
 
 void Server::DoFrame()
@@ -114,6 +116,12 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
+	if (isFirstPlayer)
+	{
+		GameObjectPtr go = std::static_pointer_cast<Mouse>(GameObjectRegistry::sInstance->CreateGameObject('MOUS'));
+		go->SetLocation({ 0.f, 0.f, 0.f });
+	}
+
 	RoboCatPtr cat = std::static_pointer_cast<RoboCat>(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
@@ -126,8 +134,6 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 		isFirstPlayer = false;
 		//m_timer.restart();
 	}
-
-	//cat->AlertRestartClocks();
 
 	//m_timer = 0;
 	//cat->SetLatestPlayer();

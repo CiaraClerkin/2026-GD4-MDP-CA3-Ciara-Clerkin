@@ -12,7 +12,7 @@ TextureManager::TextureManager()
 	CacheTexture("player", "../Assets/16x16 All Animations-Sheet.png");
 	CacheTexture("zombie", "../Assets/16x16 All Animations-Sheet Zombie.png");
 	CacheTexture("cat", "../Assets/cat.png");
-	CacheTexture("mouse", "../Assets/mouse.png");
+	CacheTexture("mouse", "../Assets/map.png");
 	CacheTexture("yarn", "../Assets/yarn.png");
 }
 
