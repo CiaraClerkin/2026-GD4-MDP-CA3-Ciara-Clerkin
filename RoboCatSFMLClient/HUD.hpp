@@ -10,7 +10,14 @@ public:
 	void Render();
 
 	void SetPlayerHealth(int inHealth) { mHealth = inHealth; }
-	void SetEndText(std::string inTimer) { mEndText = inTimer; }
+	void SetEndText(std::string inTimer) 
+	{
+		if (!mIsEndTextSet)
+		{
+			mEndText = inTimer;
+			mIsEndTextSet = true;
+		}
+	}
 	void SetTimer(int inTimer) { mTimer = inTimer; }
 
 private:
@@ -33,6 +40,7 @@ private:
 	int											mHealth;
 	std::string									mEndText;
 	int											mTimer;
+	bool										mIsEndTextSet = false;
 };
 
 

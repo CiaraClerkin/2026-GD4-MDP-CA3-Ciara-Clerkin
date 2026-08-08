@@ -21,9 +21,9 @@ void HUD::StaticInit()
 
 void HUD::Render()
 {
-	RenderBandWidth();
-	RenderRoundTripTime();
-	RenderScoreBoard();
+	//RenderBandWidth();
+	//RenderRoundTripTime();
+	//RenderScoreBoard();
 	//RenderHealth();
 	RenderTimer();
 	if (mEndText != "Running")
@@ -78,7 +78,7 @@ void HUD::RenderScoreBoard()
 
 void HUD::RenderTimer()
 {
-	RenderText(std::to_string(mTimer), { 500.f + WindowManager::sInstance->getView().getCenter().x, +WindowManager::sInstance->getView().getCenter().y - 350, 0.0f }, Colors::White);
+	RenderText(std::to_string(mTimer), { WindowManager::sInstance->getView().getCenter().x - (25 * std::to_string(mTimer).length()) / 2, +WindowManager::sInstance->getView().getCenter().y - 350, 0.0f }, Colors::White);
 	//NetworkManager::
 	//if (mTimer > 120)
 	//{
