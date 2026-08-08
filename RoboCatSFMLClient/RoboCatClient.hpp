@@ -31,5 +31,6 @@ private:
 
 	bool isZombie;
 	sf::Clock mClock;
+	int mTimeLimit = 101;
 };
 

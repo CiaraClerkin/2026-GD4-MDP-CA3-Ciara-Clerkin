@@ -47,13 +47,13 @@ void RoboCatClient::Update()
 
 	//HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
 
-	if (mClock.getElapsedTime().asSeconds() > 20)
+	if (mClock.getElapsedTime().asSeconds() > mTimeLimit)
 	{
 		HUD::sInstance->SetEndText("Survivors Win!");
 	}
 	else
 	{
-		HUD::sInstance->SetTimer(mClock.getElapsedTime().asSeconds());
+		HUD::sInstance->SetTimer(mTimeLimit - mClock.getElapsedTime().asSeconds());
 	}
 	
 
