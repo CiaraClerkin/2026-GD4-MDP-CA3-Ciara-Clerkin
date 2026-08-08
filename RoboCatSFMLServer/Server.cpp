@@ -118,6 +118,7 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 {
 	if (isFirstPlayer)
 	{
+		// Spawn the game's background using mouse class before the cat
 		GameObjectPtr go = std::static_pointer_cast<Mouse>(GameObjectRegistry::sInstance->CreateGameObject('MOUS'));
 		go->SetLocation({ 0.f, 0.f, 0.f });
 	}
@@ -126,7 +127,7 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(0.f + (static_cast<float>(inPlayerId) * 100), 500.f, 0.f));
+	cat->SetLocation(spawnPositions[inPlayerId-1]);
 
 	if (isFirstPlayer)
 	{
